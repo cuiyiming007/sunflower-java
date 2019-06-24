@@ -1,4 +1,4 @@
-package com.cym.sunflower;
+package com.cym.sunflower.ui;
 
 
 import android.os.Bundle;
@@ -12,25 +12,30 @@ import android.view.ViewGroup;
 
 import com.cym.sunflower.adapters.GardenPlantingAdapter;
 import com.cym.sunflower.databinding.FragmentGardenBinding;
-import com.cym.sunflower.utilities.InjectorUtils;
+import com.cym.sunflower.di.Injectable;
 import com.cym.sunflower.viewmodels.GardenPlantingListViewModel;
-import com.cym.sunflower.viewmodels.GardenPlantingListViewModelFactory;
+import com.cym.sunflower.viewmodels.ViewModelProviderFactory;
+
+import javax.inject.Inject;
 
 
-public class GardenFragment extends Fragment {
+public class GardenFragment extends Fragment implements Injectable {
+
+    @Inject
+    GardenPlantingAdapter adapter;
+    @Inject
+    public ViewModelProviderFactory factory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         FragmentGardenBinding binding = FragmentGardenBinding.inflate(inflater, container, false);
-        GardenPlantingAdapter adapter = new GardenPlantingAdapter();
         binding.gardenList.setAdapter(adapter);
         subscribeUi(adapter, binding);
         return binding.getRoot();
     }
 
     private void subscribeUi(GardenPlantingAdapter adapter, FragmentGardenBinding binding) {
-        GardenPlantingListViewModelFactory factory = InjectorUtils.provideGardenPlantingListViewModelFactory(requireContext());
         GardenPlantingListViewModel viewModel = ViewModelProviders.of(this, factory).get(GardenPlantingListViewModel.class);
 
         viewModel.gardenPlantings.observe(getViewLifecycleOwner(),

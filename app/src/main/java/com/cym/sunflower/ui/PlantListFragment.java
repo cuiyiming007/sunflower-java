@@ -1,13 +1,8 @@
-package com.cym.sunflower;
+package com.cym.sunflower.ui;
 
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,16 +10,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.cym.sunflower.R;
 import com.cym.sunflower.adapters.PlantAdapter;
 import com.cym.sunflower.databinding.FragmentPlantListBinding;
-import com.cym.sunflower.utilities.InjectorUtils;
+import com.cym.sunflower.di.Injectable;
 import com.cym.sunflower.viewmodels.PlantListViewModel;
-import com.cym.sunflower.viewmodels.PlantListViewModelFactory;
+import com.cym.sunflower.viewmodels.ViewModelProviderFactory;
 
-public class PlantListFragment extends Fragment {
+import javax.inject.Inject;
+
+public class PlantListFragment extends Fragment implements Injectable {
 
     private PlantListViewModel viewModel;
 
+    @Inject
+    public ViewModelProviderFactory factory;
+    @Inject
+    public PlantAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,10 +40,8 @@ public class PlantListFragment extends Fragment {
         if (context == null) {
             return binding.getRoot();
         }
-        PlantListViewModelFactory factory = InjectorUtils.providePlantListViewModelFactory(context);
         viewModel = ViewModelProviders.of(this, factory).get(PlantListViewModel.class);
 
-        PlantAdapter adapter = new PlantAdapter();
         binding.plantList.setAdapter(adapter);
         subscribeUi(adapter);
 

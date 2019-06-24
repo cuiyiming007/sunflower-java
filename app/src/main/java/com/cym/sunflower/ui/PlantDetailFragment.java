@@ -1,9 +1,13 @@
-package com.cym.sunflower;
+package com.cym.sunflower.ui;
 
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ShareCompat;
@@ -11,23 +15,24 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.cym.sunflower.R;
 import com.cym.sunflower.databinding.FragmentPlantDetailBinding;
-import com.cym.sunflower.utilities.InjectorUtils;
+import com.cym.sunflower.di.Injectable;
 import com.cym.sunflower.viewmodels.PlantDetailViewModel;
-import com.cym.sunflower.viewmodels.PlantDetailViewModelFactory;
+import com.cym.sunflower.viewmodels.ViewModelProviderFactory;
 import com.google.android.material.snackbar.Snackbar;
+
+import javax.inject.Inject;
 
 /**
  * A fragment representing a single Plant detail screen.
  */
-public class PlantDetailFragment extends Fragment {
+public class PlantDetailFragment extends Fragment implements Injectable {
 
     private String shareText;
+
+    @Inject
+    public ViewModelProviderFactory factory;
 
     public PlantDetailFragment() {
         // Required empty public constructor
@@ -39,8 +44,8 @@ public class PlantDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         String plantId = PlantDetailFragmentArgs.fromBundle(getArguments()).getPlantId();
 
-        PlantDetailViewModelFactory factory = InjectorUtils.providePlantDetailViewModelFactory(requireActivity(), plantId);
         PlantDetailViewModel plantDetailViewModel = ViewModelProviders.of(this, factory).get(PlantDetailViewModel.class);
+        plantDetailViewModel.setPlantId(plantId);
 
         FragmentPlantDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_plant_detail, container, false);
         binding.setViewModel(plantDetailViewModel);

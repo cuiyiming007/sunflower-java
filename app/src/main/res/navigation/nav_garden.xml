@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/garden_fragment"
-        android:name="com.cym.sunflower.GardenFragment"
+        android:name="com.cym.sunflower.ui.GardenFragment"
         android:label="@string/my_garden_title"
         tools:layout="@layout/fragment_garden">
 
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/plant_list_fragment"
-        android:name="com.cym.sunflower.PlantListFragment"
+        android:name="com.cym.sunflower.ui.PlantListFragment"
         android:label="@string/plant_list_title"
         tools:layout="@layout/fragment_plant_list">
 
@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/plant_detail_fragment"
-        android:name="com.cym.sunflower.PlantDetailFragment"
+        android:name="com.cym.sunflower.ui.PlantDetailFragment"
         android:label="@string/plant_details_title"
         tools:layout="@layout/fragment_plant_detail">
         <argument

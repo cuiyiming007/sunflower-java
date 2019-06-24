@@ -23,6 +23,9 @@
             name="clickListener"
             type="android.view.View.OnClickListener"/>
         <variable
+            name="longClickListener"
+            type="android.view.View.OnLongClickListener" />
+        <variable
             name="viewModel"
             type="com.cym.sunflower.viewmodels.PlantAndGardenPlantingsViewModel"/>
     </data>
@@ -30,7 +33,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{clickListener}">
+        android:onClick="@{clickListener}"
+        android:onLongClick="@{longClickListener}">
 
         <ImageView
             android:id="@+id/imageView"

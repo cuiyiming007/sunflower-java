@@ -4,22 +4,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cym.sunflower.PlantListFragment;
-import com.cym.sunflower.PlantListFragmentDirections;
+import com.cym.sunflower.ui.PlantListFragment;
 import com.cym.sunflower.data.Plant;
 import com.cym.sunflower.databinding.ListItemPlantBinding;
+import com.cym.sunflower.ui.PlantListFragmentDirections;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import javax.inject.Inject;
+
 /**
  * Adapter for the {@link RecyclerView} in {@link PlantListFragment}
  */
 public class PlantAdapter extends ListAdapter<Plant, PlantAdapter.ViewHolder> {
 
-
+    @Inject
     public PlantAdapter() {
         super(new PlantDiffCallback());
     }

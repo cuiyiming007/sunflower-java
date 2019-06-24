@@ -4,14 +4,18 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Repository module for handling data operations.
  */
+@Singleton
 public class PlantRepository {
     private PlantDao plantDao;
-    private static volatile PlantRepository instance;
 
-    private PlantRepository(PlantDao plantDao) {
+    @Inject
+    public PlantRepository(PlantDao plantDao) {
         this.plantDao = plantDao;
     }
 
@@ -25,16 +29,5 @@ public class PlantRepository {
 
     public LiveData<List<Plant>> getPlantsWithGrowZoneNumber(int growZoneNumber) {
         return plantDao.getPlantsWithGrowZoneNumber(growZoneNumber);
-    }
-
-    public static PlantRepository getInstance(PlantDao plantDao) {
-        if (instance == null) {
-            synchronized (PlantRepository.class) {
-                if (instance == null) {
-                    instance = new PlantRepository(plantDao);
-                }
-            }
-        }
-        return instance;
     }
 }

@@ -1,14 +1,12 @@
 package com.cym.sunflower.data;
 
-import java.util.Calendar;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
-import androidx.room.TypeConverters;
+
+import java.util.Calendar;
 
 /**
  * {@link GardenPlanting} represents when a user adds a {@link Plant} to their garden, with useful metadata.

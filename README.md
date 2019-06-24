@@ -4,6 +4,14 @@ A gardening app illustrating Android development best practices with Android Jet
 
 The google official sample is in KOTLIN.
 
+Releases:
+
+Version | Description
+ ------ | -------
+v1.1.0  | using dagger2 as di
+v1.0.0  | android architecture in Java
+
+
 ------------------------
 
 [![CircleCI](https://circleci.com/gh/googlesamples/android-sunflower/tree/master.svg?style=shield)](https://circleci.com/gh/googlesamples/android-sunflower/tree/master)
@@ -162,7 +170,7 @@ Select text used for describing the plants (in `plants.json`) are used from Wiki
 License
 -------
 
-Copyright 2018 Google, Inc.
+Copyright 2019 CuiYiming
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

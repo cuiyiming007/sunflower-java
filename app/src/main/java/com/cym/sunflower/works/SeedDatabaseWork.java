@@ -1,10 +1,16 @@
 package com.cym.sunflower.works;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.cym.sunflower.data.AppDatabase;
+import androidx.annotation.NonNull;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
 import com.cym.sunflower.data.Plant;
+import com.cym.sunflower.data.PlantDao;
+import com.cym.sunflower.di.DaggerSunFlowerComponent;
 import com.cym.sunflower.utilities.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,17 +20,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.room.RoomDatabase;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
+import javax.inject.Inject;
 
 public class SeedDatabaseWork extends Worker {
 
     private String TAG = SeedDatabaseWork.class.getSimpleName();
+    @Inject
+    public PlantDao plantDao;
+    @Inject
+    public Gson gson;
 
     public SeedDatabaseWork(@NonNull Context appContext, @NonNull WorkerParameters workerParams) {
         super(appContext, workerParams);
+        DaggerSunFlowerComponent.builder().application((Application) getApplicationContext()).build().inject(this);
+
     }
 
     @NonNull
@@ -32,10 +41,9 @@ public class SeedDatabaseWork extends Worker {
     public Result doWork() {
         try {
             JsonReader jsonReader = new JsonReader(new InputStreamReader(getApplicationContext().getAssets().open(Constants.PLANT_DATA_FILENAME)));
-            List<Plant> plantList =new Gson().fromJson(jsonReader, new TypeToken<List<Plant>>(){}.getType());
+            List<Plant> plantList = gson.fromJson(jsonReader, new TypeToken<List<Plant>>(){}.getType());
 
-            AppDatabase database = AppDatabase.getInstance(getApplicationContext());
-            database.plantDao().insertAll(plantList);
+            plantDao.insertAll(plantList);
 
             return Result.success();
         } catch (IOException e) {

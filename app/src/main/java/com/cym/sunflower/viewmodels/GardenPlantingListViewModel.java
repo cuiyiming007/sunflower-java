@@ -15,11 +15,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import javax.inject.Inject;
+
 public class GardenPlantingListViewModel extends ViewModel {
 
     public LiveData<List<GardenPlanting>> gardenPlantings;
     public LiveData<List<PlantAndGardenPlantings>> plantAndGardenPlantings;
 
+    @Inject
     public GardenPlantingListViewModel(GardenPlantingRepository gardenPlantingRepository) {
         Log.d("GardenPlantingList", "i am here");
         gardenPlantings = gardenPlantingRepository.getGardenPlantings();

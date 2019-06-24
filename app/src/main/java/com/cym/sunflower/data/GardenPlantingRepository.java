@@ -4,33 +4,26 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class GardenPlantingRepository {
     private GardenPlantingDao gardenPlantingDao;
 
-    private volatile static GardenPlantingRepository instance;
-
-    private GardenPlantingRepository(GardenPlantingDao gardenPlantingDao) {
+    @Inject
+    public GardenPlantingRepository(GardenPlantingDao gardenPlantingDao) {
         this.gardenPlantingDao = gardenPlantingDao;
     }
 
     public void createGardenPlanting(String plantId) {
         GardenPlanting gardenPlanting = new GardenPlanting(plantId);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gardenPlantingDao.insertGardenPlanting(gardenPlanting);
-            }
-        }).start();
+        new Thread(() -> gardenPlantingDao.insertGardenPlanting(gardenPlanting)).start();
 
     }
 
     public void removeGardenPlanting(GardenPlanting gardenPlanting) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gardenPlantingDao.deleteGardenPlanting(gardenPlanting);
-            }
-        }).start();
+        new Thread(() -> gardenPlantingDao.deleteGardenPlanting(gardenPlanting)).start();
     }
 
     public LiveData<GardenPlanting> getGardenPlantingForPlant(String plantId) {
@@ -43,16 +36,5 @@ public class GardenPlantingRepository {
 
     public LiveData<List<PlantAndGardenPlantings>> getPlantAndGardenPlantings() {
         return gardenPlantingDao.getPlantAndGardenPlantings();
-    }
-
-    public static GardenPlantingRepository getInstance(GardenPlantingDao gardenPlantingDao) {
-        if (instance == null) {
-            synchronized (GardenPlantingRepository.class) {
-                if (instance == null) {
-                    instance = new GardenPlantingRepository(gardenPlantingDao);
-                }
-            }
-        }
-        return instance;
     }
 }
