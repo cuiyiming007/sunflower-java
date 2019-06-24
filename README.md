@@ -82,7 +82,7 @@ abstract class ViewModelModule {
 }
 ```
 
-In [v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0), we only need to write a generic [`ViewModel factory` class]() of which instances are created for each Activity or [Fragment]() instance.   
+In [v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0), we only need to write a generic [`ViewModel factory` class](https://github.com/cuiyiming007/sunflowr-by-java/blob/99d7c5c561b25a350c36b679615bc078132a2f43/app/src/main/java/com/cym/sunflower/viewmodels/ViewModelSimpleFactory.java) of which instances are created for each Activity or [Fragment](https://github.com/cuiyiming007/sunflowr-by-java/blob/99d7c5c561b25a350c36b679615bc078132a2f43/app/src/main/java/com/cym/sunflower/ui/GardenFragment.java) instance.   
 There is the code snippet,  
 ViewModelFactory:
 ```java
@@ -105,10 +105,17 @@ public class ViewModelSimpleFactory<VM extends ViewModel> extends ViewModelProvi
 
 Activity or Fragment:
 ```java
-@Inject
-public ViewModelSimpleFactory<GardenPlantingListViewModel> factory;
+public class GardenFragment extends Fragment implements Injectable {
+    @Inject
+    public ViewModelSimpleFactory<GardenPlantingListViewModel> factory;
 
-GardenPlantingListViewModel viewModel = ViewModelProviders.of(this, factory).get(GardenPlantingListViewModel.class);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //...
+        GardenPlantingListViewModel viewModel = ViewModelProviders.of(this, factory).get(GardenPlantingListViewModel.class);
+        //...
+    }
+}
 ```
 
 That's all!
