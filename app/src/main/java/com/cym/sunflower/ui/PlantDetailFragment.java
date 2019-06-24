@@ -19,7 +19,7 @@ import com.cym.sunflower.R;
 import com.cym.sunflower.databinding.FragmentPlantDetailBinding;
 import com.cym.sunflower.di.Injectable;
 import com.cym.sunflower.viewmodels.PlantDetailViewModel;
-import com.cym.sunflower.viewmodels.ViewModelProviderFactory;
+import com.cym.sunflower.viewmodels.ViewModelSimpleFactory;
 import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
@@ -32,7 +32,7 @@ public class PlantDetailFragment extends Fragment implements Injectable {
     private String shareText;
 
     @Inject
-    public ViewModelProviderFactory factory;
+    public ViewModelSimpleFactory<PlantDetailViewModel> factory;
 
     public PlantDetailFragment() {
         // Required empty public constructor

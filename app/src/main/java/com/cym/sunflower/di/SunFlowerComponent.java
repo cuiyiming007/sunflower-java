@@ -12,7 +12,7 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class, GardenActivityModule.class, AppModule.class, ViewModelModule.class})
+@Component(modules = {AndroidInjectionModule.class, GardenActivityModule.class, AppModule.class})
 public interface SunFlowerComponent {
     @Component.Builder
     interface Builder {

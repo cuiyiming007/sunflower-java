@@ -2,19 +2,18 @@ package com.cym.sunflower.ui;
 
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.cym.sunflower.adapters.GardenPlantingAdapter;
 import com.cym.sunflower.databinding.FragmentGardenBinding;
 import com.cym.sunflower.di.Injectable;
 import com.cym.sunflower.viewmodels.GardenPlantingListViewModel;
-import com.cym.sunflower.viewmodels.ViewModelProviderFactory;
+import com.cym.sunflower.viewmodels.ViewModelSimpleFactory;
 
 import javax.inject.Inject;
 
@@ -24,7 +23,7 @@ public class GardenFragment extends Fragment implements Injectable {
     @Inject
     GardenPlantingAdapter adapter;
     @Inject
-    public ViewModelProviderFactory factory;
+    public ViewModelSimpleFactory<GardenPlantingListViewModel> factory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

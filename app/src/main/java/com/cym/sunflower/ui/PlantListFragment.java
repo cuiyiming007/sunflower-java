@@ -19,7 +19,7 @@ import com.cym.sunflower.adapters.PlantAdapter;
 import com.cym.sunflower.databinding.FragmentPlantListBinding;
 import com.cym.sunflower.di.Injectable;
 import com.cym.sunflower.viewmodels.PlantListViewModel;
-import com.cym.sunflower.viewmodels.ViewModelProviderFactory;
+import com.cym.sunflower.viewmodels.ViewModelSimpleFactory;
 
 import javax.inject.Inject;
 
@@ -28,7 +28,7 @@ public class PlantListFragment extends Fragment implements Injectable {
     private PlantListViewModel viewModel;
 
     @Inject
-    public ViewModelProviderFactory factory;
+    public ViewModelSimpleFactory<PlantListViewModel> factory;
     @Inject
     public PlantAdapter adapter;
 

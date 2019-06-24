@@ -8,8 +8,110 @@ Releases:
 
 Version | Description
  ------ | -------
-v1.1.0  | using dagger2 as di
-v1.0.0  | android architecture in Java
+[v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0)  | another simple and better way to inject `ViewModel` 
+[v1.1.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.1.0)  | using dagger2 as di, add LongClickListener to delete plant
+[v1.0.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.0.0)  | android architecture in Java
+
+## A brief description between v1.1.0 and v1.2.0
+
+In [v1.1.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.1.0), I reference the Google Official Sample [GithubBrowserSample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample). Re-write the di codes from Kotlin to Java.  
+To inject ViewModels, we’ve to create a singleton [factory](https://github.com/cuiyiming007/sunflowr-by-java/blob/6bd49fe8c585e80c62366a6d513945aa9d89712f/app/src/main/java/com/cym/sunflower/viewmodels/ViewModelProviderFactory.java) that was supplied with a map of `ViewModel`-based classes and their respective `Provider`s. It required us to create a custom [`ViewModelKey` annotation](https://github.com/cuiyiming007/sunflowr-by-java/blob/6bd49fe8c585e80c62366a6d513945aa9d89712f/app/src/main/java/com/cym/sunflower/di/ViewModelKey.java) and use Dagger to generate the map in a [module](https://github.com/cuiyiming007/sunflowr-by-java/blob/6bd49fe8c585e80c62366a6d513945aa9d89712f/app/src/main/java/com/cym/sunflower/di/ViewModelModule.java) using `IntoMap` bindings.  
+There is the code snippet,  
+ViewModelFactory:
+```java
+@Singleton
+public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFactory {
+
+    Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
+
+    @Inject
+    public ViewModelProviderFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+        this.creators = creators;
+    }
+
+    @NonNull
+    @Override
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        Provider<ViewModel> creator = creators.get(modelClass);
+        if (creator == null) {
+            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+                if (modelClass.isAssignableFrom(entry.getKey())) {
+                    creator = entry.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (creator == null) {
+            throw new IllegalArgumentException("unknown model class " + modelClass);
+        }
+        return (T) creator.get();
+    }
+}
+```
+
+ViewModelKey:
+```java
+@MapKey
+@interface ViewModelKey {
+    Class<? extends ViewModel> value();
+}
+```
+
+ViewModelModule:
+```java
+@Module
+abstract class ViewModelModule {
+    @Binds
+    @IntoMap
+    @ViewModelKey(GardenPlantingListViewModel.class)
+    abstract ViewModel bindGardenPlantingListViewModel(GardenPlantingListViewModel gardenPlantingListViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlantDetailViewModel.class)
+    abstract ViewModel bindPlantDetailViewModel(PlantDetailViewModel plantDetailViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlantListViewModel.class)
+    abstract ViewModel bindPlantListViewModel(PlantListViewModel plantListViewModel);
+
+    @Binds
+    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelProviderFactory factory);
+}
+```
+
+In [v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0), we only need to write a generic [`ViewModel factory` class]() of which instances are created for each Activity or [Fragment]() instance.   
+There is the code snippet,  
+ViewModelFactory:
+```java
+@Singleton
+public class ViewModelSimpleFactory<VM extends ViewModel> extends ViewModelProvider.NewInstanceFactory {
+
+    private Lazy<VM> viewModel;
+    @Inject
+    public ViewModelSimpleFactory(Lazy<VM> viewModel) {
+        this.viewModel = viewModel;
+    }
+
+    @NonNull
+    @Override
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        return (T) viewModel.get();
+    }
+}
+```
+
+Activity or Fragment:
+```java
+@Inject
+public ViewModelSimpleFactory<GardenPlantingListViewModel> factory;
+
+GardenPlantingListViewModel viewModel = ViewModelProviders.of(this, factory).get(GardenPlantingListViewModel.class);
+```
+
+That's all!
 
 
 ------------------------
