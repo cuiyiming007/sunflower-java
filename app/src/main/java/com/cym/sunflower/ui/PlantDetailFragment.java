@@ -31,8 +31,11 @@ public class PlantDetailFragment extends Fragment implements Injectable {
 
     private String shareText;
 
+//    @Inject
+//    public ViewModelSimpleFactory<PlantDetailViewModel> factory;
+
     @Inject
-    public ViewModelSimpleFactory<PlantDetailViewModel> factory;
+    public PlantDetailViewModel.Factory factory2;
 
     public PlantDetailFragment() {
         // Required empty public constructor
@@ -44,8 +47,9 @@ public class PlantDetailFragment extends Fragment implements Injectable {
                              Bundle savedInstanceState) {
         String plantId = PlantDetailFragmentArgs.fromBundle(getArguments()).getPlantId();
 
-        PlantDetailViewModel plantDetailViewModel = ViewModelProviders.of(this, factory).get(PlantDetailViewModel.class);
-        plantDetailViewModel.setPlantId(plantId);
+//        PlantDetailViewModel plantDetailViewModel = ViewModelProviders.of(this, factory).get(PlantDetailViewModel.class);
+//        plantDetailViewModel.setPlantId(plantId);
+        PlantDetailViewModel plantDetailViewModel = factory2.create(plantId);
 
         FragmentPlantDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_plant_detail, container, false);
         binding.setViewModel(plantDetailViewModel);

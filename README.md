@@ -8,6 +8,7 @@ Releases:
 
 Version | Description
  ------ | -------
+[v1.3.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.3.0)  | improve performance and a elegant way to inject params like intent of activity
 [v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0)  | another simple and better way to inject `ViewModel` 
 [v1.1.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.1.0)  | using dagger2 as di, add LongClickListener to delete plant
 [v1.0.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.0.0)  | android architecture in Java
@@ -119,6 +120,68 @@ public class GardenFragment extends Fragment implements Injectable {
 ```
 
 That's all!
+
+## v1.3.0 A elegant way to inject Params like Intent of Activity
+
+In [v1.3.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.3.0), I improve the performance of Dagger reference this article- [Keeping the Daggers Sharp](https://medium.com/square-corner-blog/keeping-the-daggers-sharp-%EF%B8%8F-230b3191c3f).  
+
+And I find a way to Inject variable params elegantly - using [AssistedInject](https://github.com/square/AssistedInject) library.
+
+First, add dependencies:
+```java
+compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.4.0'
+annotationProcessor 'com.squareup.inject:assisted-inject-processor-dagger2:0.4.0'
+```
+
+Second, annotated with `@AssistedInject` instead of `@Inject`, annotate the variable params as `@Assisted`, create a factory interface annotated with `@AssistedInject.Factory`.
+
+[PlantDetailViewModel](https://github.com/cuiyiming007/sunflower-java/blob/v1.3.0/app/src/main/java/com/cym/sunflower/viewmodels/PlantDetailViewModel.java):
+```java
+public class PlantDetailViewModel extends ViewModel {
+
+    @AssistedInject
+    public PlantDetailViewModel(PlantRepository plantRepository, GardenPlantingRepository gardenPlantingRepository,@Assisted String plantId) {
+    }
+
+    @AssistedInject.Factory
+    public interface Factory {
+        PlantDetailViewModel create(String plantId);
+    }
+}
+```
+
+Third, create a `module` or add it in a exist module to include the Factory in the graph.
+
+[GardenActivityModule](https://github.com/cuiyiming007/sunflower-java/blob/v1.3.0/app/src/main/java/com/cym/sunflower/di/GardenActivityModule.java):
+```java
+@AssistedModule
+@Module(includes = {AssistedInject_GardenActivityModule.class})
+abstract class GardenActivityModule {
+    //...
+}
+```
+
+Fourth, in your [Activity or Fragement](https://github.com/cuiyiming007/sunflower-java/blob/v1.3.0/app/src/main/java/com/cym/sunflower/ui/PlantDetailFragment.java):
+```java
+public class PlantDetailFragment extends Fragment implements Injectable {
+
+    @Inject
+    public PlantDetailViewModel.Factory factory2;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        String plantId = PlantDetailFragmentArgs.fromBundle(getArguments()).getPlantId();
+
+        PlantDetailViewModel plantDetailViewModel = factory2.create(plantId);
+    }
+}
+```
+
+That's all.
+
+But this is not good enough. The ViewModle should provide by the `ViewModelProvider.Factory`, I don't know how to implement it. If you hava an idea, please tell me.
+
+
 
 
 ------------------------

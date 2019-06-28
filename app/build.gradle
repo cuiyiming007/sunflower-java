@@ -47,7 +47,9 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.23.1'
     implementation 'com.google.dagger:dagger-android:2.23.1'
     implementation 'com.google.dagger:dagger-android-support:2.23.1' // if you use the support libraries
+    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.4.0'
 
+    annotationProcessor 'com.squareup.inject:assisted-inject-processor-dagger2:0.4.0'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.23.1'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.1'
     annotationProcessor "androidx.room:room-compiler:2.1.0"

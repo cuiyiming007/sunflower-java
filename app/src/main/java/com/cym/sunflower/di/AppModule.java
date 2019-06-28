@@ -12,9 +12,7 @@ import androidx.work.WorkRequest;
 
 import com.cym.sunflower.data.AppDatabase;
 import com.cym.sunflower.data.GardenPlantingDao;
-import com.cym.sunflower.data.GardenPlantingRepository;
 import com.cym.sunflower.data.PlantDao;
-import com.cym.sunflower.data.PlantRepository;
 import com.cym.sunflower.utilities.Constants;
 import com.cym.sunflower.works.SeedDatabaseWork;
 import com.google.gson.Gson;
@@ -28,7 +26,7 @@ import dagger.Provides;
 public class AppModule {
     @Singleton
     @Provides
-    AppDatabase provideAppDatabase(Application application) {
+    static AppDatabase provideAppDatabase(Application application) {
         return Room.databaseBuilder(application, AppDatabase.class, Constants.DATABASE_NAME)
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
@@ -43,31 +41,20 @@ public class AppModule {
 
     @Singleton
     @Provides
-    GardenPlantingDao provideGardenPlantingDao(AppDatabase db) {
+    static GardenPlantingDao provideGardenPlantingDao(AppDatabase db) {
         return db.gardenPlantingDao();
     }
 
     @Singleton
     @Provides
-    PlantDao providePlantDao(AppDatabase db) {
+    static PlantDao providePlantDao(AppDatabase db) {
         return db.plantDao();
     }
 
-    @Singleton
-    @Provides
-    GardenPlantingRepository provideGardenPlantingRepository(GardenPlantingDao gardenPlantingDao) {
-        return new GardenPlantingRepository(gardenPlantingDao);
-    }
 
     @Singleton
     @Provides
-    PlantRepository providePlantRepository(PlantDao plantDao) {
-        return new PlantRepository(plantDao);
-    }
-
-    @Singleton
-    @Provides
-    Gson provideGson() {
+    static Gson provideGson() {
         return new Gson();
     }
 }

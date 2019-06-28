@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-abstract class FragmentBuikdersModule {
+abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract GardenFragment contributeGardenFragmentInjector();
 
