@@ -13,10 +13,12 @@ Version | Description
 [v1.1.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.1.0)  | using dagger2 as di, add LongClickListener to delete plant
 [v1.0.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.0.0)  | android architecture in Java
 
+>There is a detailed introduction in my Blog - [Android Sunflower + Dagger2](https://cuiyiming007.github.io/android/2019/06/24/android-sunflower-java-2.html). It's in Chinese.
+
 ## A brief description between v1.1.0 and v1.2.0
 
 In [v1.1.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.1.0), I reference the Google Official Sample [GithubBrowserSample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample). Re-write the di codes from Kotlin to Java.  
-To inject ViewModels, we’ve to create a singleton [factory](https://github.com/cuiyiming007/sunflowr-by-java/blob/6bd49fe8c585e80c62366a6d513945aa9d89712f/app/src/main/java/com/cym/sunflower/viewmodels/ViewModelProviderFactory.java) that was supplied with a map of `ViewModel`-based classes and their respective `Provider`s. It required us to create a custom [`ViewModelKey` annotation](https://github.com/cuiyiming007/sunflowr-by-java/blob/6bd49fe8c585e80c62366a6d513945aa9d89712f/app/src/main/java/com/cym/sunflower/di/ViewModelKey.java) and use Dagger to generate the map in a [module](https://github.com/cuiyiming007/sunflowr-by-java/blob/6bd49fe8c585e80c62366a6d513945aa9d89712f/app/src/main/java/com/cym/sunflower/di/ViewModelModule.java) using `IntoMap` bindings.  
+To inject ViewModels, we’ve to create a singleton [factory](https://github.com/cuiyiming007/sunflowr-by-java/blob/v1.1.0/app/src/main/java/com/cym/sunflower/viewmodels/ViewModelProviderFactory.java) that was supplied with a map of `ViewModel`-based classes and their respective `Provider`s. It required us to create a custom [`ViewModelKey` annotation](https://github.com/cuiyiming007/sunflowr-by-java/blob/v1.1.0/app/src/main/java/com/cym/sunflower/di/ViewModelKey.java) and use Dagger to generate the map in a [module](https://github.com/cuiyiming007/sunflowr-by-java/blob/v1.1.0/app/src/main/java/com/cym/sunflower/di/ViewModelModule.java) using `IntoMap` bindings.  
 There is the code snippet,  
 ViewModelFactory:
 ```java
@@ -83,7 +85,7 @@ abstract class ViewModelModule {
 }
 ```
 
-In [v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0), we only need to write a generic [`ViewModel factory` class](https://github.com/cuiyiming007/sunflowr-by-java/blob/99d7c5c561b25a350c36b679615bc078132a2f43/app/src/main/java/com/cym/sunflower/viewmodels/ViewModelSimpleFactory.java) of which instances are created for each Activity or [Fragment](https://github.com/cuiyiming007/sunflowr-by-java/blob/99d7c5c561b25a350c36b679615bc078132a2f43/app/src/main/java/com/cym/sunflower/ui/GardenFragment.java) instance.   
+In [v1.2.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.2.0), we only need to write a generic [`ViewModel factory` class](https://github.com/cuiyiming007/sunflowr-by-java/blob/v1.2.0/app/src/main/java/com/cym/sunflower/viewmodels/ViewModelSimpleFactory.java) of which instances are created for each Activity or [Fragment](https://github.com/cuiyiming007/sunflowr-by-java/blob/v1.2.0/app/src/main/java/com/cym/sunflower/ui/GardenFragment.java) instance.   
 There is the code snippet,  
 ViewModelFactory:
 ```java
@@ -128,7 +130,7 @@ In [v1.3.0](https://github.com/cuiyiming007/sunflowr-by-java/releases/tag/v1.3.0
 And I find a way to Inject variable params elegantly - using [AssistedInject](https://github.com/square/AssistedInject) library.
 
 First, add dependencies:
-```java
+```
 compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.4.0'
 annotationProcessor 'com.squareup.inject:assisted-inject-processor-dagger2:0.4.0'
 ```
